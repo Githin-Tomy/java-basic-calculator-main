@@ -6,7 +6,7 @@ public class SimpleCalculator {
 
     // Method to add two numbers
     public double add(double num1, double num2) {
-        double result = num1 - num2;
+        double result = num1 + num2;
         history.append("Addition: ").append(num1).append(" + ").append(num2).append(" = ").append(result).append("\n");
         return result;
     }
