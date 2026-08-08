@@ -11,8 +11,8 @@ permissions:
   security-events: write
 
 jobs:
-  unit-tests:
-    name: Compile and test
+  build-and-analyze:
+    name: Build, Test, and Scan
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository
@@ -24,33 +24,21 @@ jobs:
           distribution: temurin
           java-version: '21'
 
-      - name: Compile application and tests
-        run: javac -d build/classes src/SimpleCalculator.java tests/SimpleCalculatorTest.java
-
-      - name: Run unit tests
-        run: java -ea -cp build/classes SimpleCalculatorTest
-
-  sast:
-    name: CodeQL SAST
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check out repository
-        uses: actions/checkout@v4
-
+      # 1. Initialize CodeQL BEFORE compiling
       - name: Initialize CodeQL
         uses: github/codeql-action/init@v3
         with:
           languages: java-kotlin
           build-mode: manual
 
-      - name: Set up JDK
-        uses: actions/setup-java@v4
-        with:
-          distribution: temurin
-          java-version: '21'
+      # 2. Compile application and tests (CodeQL traces this step)
+      - name: Compile application and tests
+        run: javac -d build/classes src/SimpleCalculator.java tests/SimpleCalculatorTest.java
 
-      - name: Build Java source for analysis
-        run: javac -d build/classes src/SimpleCalculator.java
+      # 3. Run unit tests
+      - name: Run unit tests
+        run: java -ea -cp build/classes SimpleCalculatorTest
 
+      # 4. Finalize CodeQL SAST analysis
       - name: Run CodeQL analysis
         uses: github/codeql-action/analyze@v3
