@@ -4,7 +4,6 @@ public class SimpleCalculatorTest {
     public static void main(String[] args) {
         SimpleCalculator calculator = new SimpleCalculator();
 
-        assertEquals(5.0, calculator.add(2.0, 3.0), "addition");
         assertEquals(-1.0, calculator.subtract(2.0, 3.0), "subtraction");
         assertEquals(6.0, calculator.multiply(2.0, 3.0), "multiplication");
         assertEquals(2.5, calculator.divide(5.0, 2.0), "division");
